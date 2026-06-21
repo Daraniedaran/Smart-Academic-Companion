@@ -137,10 +137,12 @@ const Chatbot = () => {
   };
 
   const chips = [
-    'Explain Recursion',
+    'Latest AI trends in 2026',
+    'Explain cloud computing vs edge computing',
+    'Top cybersecurity certifications',
     'Design a study plan for exams',
-    'Standard resume format for tech students',
-    'Tips to improve math grades'
+    'How does Docker work?',
+    'IT job market & salary insights'
   ];
 
   return (
@@ -149,7 +151,7 @@ const Chatbot = () => {
       <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '2.2rem' }}>AI Academic Companion</h1>
-          <p style={{ color: 'var(--text-muted)' }}>Ask questions and get instant, detailed guidance formatted in markdown.</p>
+          <p style={{ color: 'var(--text-muted)' }}>Ask about studies, programming, IT trends, cybersecurity, AI/ML, career guidance, and more.</p>
         </div>
         <button className="btn btn-secondary" onClick={clearChat} title="Clear conversation" style={{ padding: '0.65rem 0.95rem' }}>
           <Trash2 size={18} />

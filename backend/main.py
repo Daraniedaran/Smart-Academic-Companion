@@ -83,15 +83,147 @@ def get_mock_chat_response(message: str) -> str:
             "- **Experience:** Internships or volunteer leadership positions.\n\n"
             "Send me draft bullet points, and I can polish them!"
         )
+    elif any(kw in msg for kw in ["ai", "artificial intelligence", "machine learning", "deep learning", "neural network", "llm", "gpt", "chatgpt", "gemini"]):
+        return (
+            "### Artificial Intelligence & Machine Learning Overview\n\n"
+            "AI and ML are transforming the IT industry at an unprecedented pace. Here's a quick breakdown:\n\n"
+            "#### Key Concepts\n"
+            "- **Machine Learning (ML):** Algorithms that learn patterns from data without being explicitly programmed.\n"
+            "- **Deep Learning:** A subset of ML using multi-layer neural networks for complex tasks like image recognition and NLP.\n"
+            "- **Large Language Models (LLMs):** Models like GPT-4, Gemini, and LLaMA that understand and generate human-like text.\n\n"
+            "#### Current IT Trends (2025-2026)\n"
+            "- **Agentic AI:** AI systems that autonomously plan and execute multi-step tasks.\n"
+            "- **Multimodal Models:** Models processing text, images, audio, and video together.\n"
+            "- **AI in DevOps:** Automated code review, testing, and deployment pipelines.\n"
+            "- **Edge AI:** Running AI models locally on devices for faster and private inference.\n\n"
+            "Would you like me to dive deeper into any specific area?"
+        )
+    elif any(kw in msg for kw in ["cloud", "aws", "azure", "gcp", "docker", "kubernetes", "devops", "ci/cd"]):
+        return (
+            "### Cloud Computing & DevOps in the IT Industry\n\n"
+            "Cloud infrastructure is the backbone of modern IT. Here's what you need to know:\n\n"
+            "#### Major Cloud Platforms\n"
+            "- **AWS (Amazon Web Services):** Market leader with 200+ services. Key: EC2, S3, Lambda, RDS.\n"
+            "- **Microsoft Azure:** Strong enterprise integration. Key: Azure Functions, Cosmos DB, AKS.\n"
+            "- **Google Cloud Platform (GCP):** Best for data/AI workloads. Key: BigQuery, Vertex AI, Cloud Run.\n\n"
+            "#### DevOps Essentials\n"
+            "- **Containerization:** Docker packages apps into portable containers.\n"
+            "- **Orchestration:** Kubernetes manages container deployments at scale.\n"
+            "- **CI/CD:** Continuous Integration and Deployment pipelines automate testing and releases (GitHub Actions, Jenkins).\n\n"
+            "#### 2025-2026 Trends\n"
+            "- Serverless computing adoption continues to rise.\n"
+            "- Infrastructure as Code (IaC) with Terraform is becoming standard.\n"
+            "- Platform engineering teams are replacing traditional DevOps roles.\n\n"
+            "What specific cloud or DevOps topic would you like to explore?"
+        )
+    elif any(kw in msg for kw in ["cybersecurity", "security", "hacking", "encryption", "firewall", "vulnerability", "pentest"]):
+        return (
+            "### Cybersecurity in the IT Sector\n\n"
+            "Cybersecurity is one of the fastest-growing fields in IT. Here's an overview:\n\n"
+            "#### Core Domains\n"
+            "- **Network Security:** Firewalls, IDS/IPS, VPNs, and zero-trust architecture.\n"
+            "- **Application Security:** OWASP Top 10, secure coding practices, input validation.\n"
+            "- **Cloud Security:** IAM policies, encryption at rest/transit, compliance frameworks.\n"
+            "- **Penetration Testing:** Ethical hacking to find vulnerabilities before attackers do.\n\n"
+            "#### Current Trends (2025-2026)\n"
+            "- **AI-Powered Threat Detection:** Using ML to identify anomalous network behavior.\n"
+            "- **Zero Trust Architecture:** 'Never trust, always verify' approach gaining enterprise adoption.\n"
+            "- **Quantum-Safe Cryptography:** Preparing encryption standards for post-quantum era.\n"
+            "- **Supply Chain Security:** Increased scrutiny of open-source dependencies.\n\n"
+            "Want me to explain any specific cybersecurity concept or certification path?"
+        )
+    elif any(kw in msg for kw in ["web", "react", "javascript", "python", "java", "programming", "coding", "frontend", "backend", "fullstack", "full stack", "api", "database", "sql", "node"]):
+        return (
+            "### Software Development & Programming\n\n"
+            "Software development is the core of the IT industry. Here's a structured overview:\n\n"
+            "#### Popular Tech Stacks (2025-2026)\n"
+            "- **Frontend:** React, Next.js, Vue.js, Svelte, TypeScript\n"
+            "- **Backend:** Node.js, Python (FastAPI/Django), Go, Rust, Java (Spring Boot)\n"
+            "- **Databases:** PostgreSQL, MongoDB, Redis, Supabase\n"
+            "- **Mobile:** React Native, Flutter, Swift, Kotlin\n\n"
+            "#### Industry Trends\n"
+            "- **AI-Assisted Development:** GitHub Copilot, Cursor, and AI coding agents are reshaping workflows.\n"
+            "- **Edge Computing:** Processing data closer to users for low-latency applications.\n"
+            "- **WebAssembly (WASM):** Running high-performance code in browsers beyond JavaScript.\n"
+            "- **Serverless & Microservices:** Building scalable, event-driven architectures.\n\n"
+            "#### Learning Path\n"
+            "1. Pick a language (Python or JavaScript recommended for beginners).\n"
+            "2. Build projects — portfolio matters more than certificates.\n"
+            "3. Learn Git, APIs, and databases early.\n\n"
+            "Which area would you like to dive deeper into?"
+        )
+    elif any(kw in msg for kw in ["blockchain", "crypto", "web3", "nft", "smart contract", "ethereum", "bitcoin"]):
+        return (
+            "### Blockchain & Web3 Technology\n\n"
+            "Blockchain technology extends far beyond cryptocurrency. Here's what's relevant in IT:\n\n"
+            "#### Core Concepts\n"
+            "- **Blockchain:** A decentralized, immutable ledger of transactions.\n"
+            "- **Smart Contracts:** Self-executing code on platforms like Ethereum and Solana.\n"
+            "- **DApps:** Decentralized applications running on blockchain networks.\n\n"
+            "#### IT Industry Applications\n"
+            "- Supply chain transparency and verification.\n"
+            "- Decentralized identity and authentication systems.\n"
+            "- Tokenized digital assets and DeFi protocols.\n\n"
+            "#### 2025-2026 Trends\n"
+            "- Layer 2 scaling solutions (Polygon, Arbitrum) for faster transactions.\n"
+            "- Enterprise blockchain adoption (Hyperledger, private chains).\n"
+            "- Regulatory frameworks taking shape globally.\n\n"
+            "Would you like to learn about smart contract development or blockchain architecture?"
+        )
+    elif any(kw in msg for kw in ["data science", "big data", "analytics", "pandas", "numpy", "visualization", "tableau", "power bi"]):
+        return (
+            "### Data Science & Analytics\n\n"
+            "Data science is driving decision-making across every IT sector:\n\n"
+            "#### Essential Skills\n"
+            "- **Programming:** Python (Pandas, NumPy, Scikit-learn), R, SQL.\n"
+            "- **Visualization:** Matplotlib, Seaborn, Plotly, Tableau, Power BI.\n"
+            "- **Statistics:** Hypothesis testing, regression analysis, probability theory.\n"
+            "- **ML Frameworks:** TensorFlow, PyTorch, XGBoost.\n\n"
+            "#### Industry Trends (2025-2026)\n"
+            "- **Real-time Analytics:** Stream processing with Apache Kafka and Flink.\n"
+            "- **DataOps:** Automating data pipelines and governance.\n"
+            "- **Generative AI for Data:** Using LLMs to query databases with natural language.\n"
+            "- **Data Mesh Architecture:** Decentralized domain-oriented data ownership.\n\n"
+            "What specific data science topic would you like to explore?"
+        )
+    elif any(kw in msg for kw in ["trend", "latest", "current", "news", "update", "2025", "2026", "industry", "job", "placement", "salary", "hiring"]):
+        return (
+            "### IT Industry Current Affairs & Trends (2025-2026)\n\n"
+            "Here are the major trends shaping the IT sector right now:\n\n"
+            "#### 🔥 Top Technology Trends\n"
+            "1. **Agentic AI & Autonomous Systems** — AI agents that plan, reason, and execute tasks independently.\n"
+            "2. **Spatial Computing & XR** — Apple Vision Pro and Meta Quest driving mixed reality adoption.\n"
+            "3. **Quantum Computing** — IBM, Google, and startups pushing toward practical quantum advantage.\n"
+            "4. **Green IT & Sustainable Tech** — Carbon-aware computing and energy-efficient data centers.\n"
+            "5. **AI Governance & Ethics** — EU AI Act and global regulatory frameworks being enforced.\n\n"
+            "#### 💼 IT Job Market Insights\n"
+            "- **In-Demand Roles:** AI/ML Engineers, Cloud Architects, Cybersecurity Analysts, Data Engineers, Full-Stack Developers.\n"
+            "- **Emerging Roles:** Prompt Engineers, AI Safety Researchers, Platform Engineers.\n"
+            "- **Skill Premium:** Cloud certifications (AWS, Azure, GCP) and AI/ML skills command 20-40% higher salaries.\n\n"
+            "#### 🏢 Major Industry Moves\n"
+            "- Tech giants investing heavily in AI infrastructure and custom chips.\n"
+            "- Remote/hybrid work remains standard in IT companies globally.\n"
+            "- Open-source AI models challenging proprietary solutions.\n\n"
+            "Want details on any specific trend or career path?"
+        )
     else:
         return (
-            f"Thank you for reaching out! As your Smart Academic Companion, I'm here to help you study, manage notes, and track your progress. \n\n"
+            f"Thank you for reaching out! As your Smart Academic Companion, I'm equipped to help with a wide range of topics:\n\n"
             f"You asked: *\"{message}\"*\n\n"
-            f"To get the most out of our session, you can ask me to:\n"
-            f"- Explain a computer science or engineering topic.\n"
-            f"- Design a study schedule for your courses.\n"
-            f"- Solve a coding question or explain syntax.\n\n"
-            f"How can I assist you today?"
+            f"### What I Can Help You With\n\n"
+            f"#### 📚 Academics & Studies\n"
+            f"- Explain any subject topic (CS, Math, Physics, Engineering)\n"
+            f"- Design study schedules and exam preparation plans\n"
+            f"- Solve coding questions and explain algorithms\n\n"
+            f"#### 💻 Technology & Development\n"
+            f"- Programming languages, frameworks, and best practices\n"
+            f"- Cloud computing, DevOps, and system design\n"
+            f"- AI/ML concepts and implementation guidance\n\n"
+            f"#### 🌐 IT Industry & Current Affairs\n"
+            f"- Latest tech trends and industry developments\n"
+            f"- Career guidance, job market insights, and certifications\n"
+            f"- Cybersecurity, blockchain, and emerging technologies\n\n"
+            f"Try asking something specific like *'Explain cloud computing'*, *'Latest AI trends 2026'*, or *'How to prepare for a React interview'*!"
         )
 
 def get_mock_performance_analysis(marks_str: str) -> str:
@@ -156,7 +288,19 @@ async def chat_with_bot(req: ChatRequest):
             response = client.chat.completions.create(
                 model=model_name,
                 messages=[
-                    {"role": "system", "content": "You are a helpful academic assistant. Give structured response, format in markdown."},
+                    {"role": "system", "content": (
+                        "You are a Smart Academic Companion — an expert AI assistant for students and tech enthusiasts. "
+                        "You can answer ANY question related to:\n"
+                        "1. **Academics & Studies** — All subjects including Computer Science, Mathematics, Physics, Engineering, and more.\n"
+                        "2. **Technology & Development** — Programming languages, frameworks, software architecture, cloud computing, DevOps, AI/ML, databases, APIs, and development best practices.\n"
+                        "3. **IT Industry Current Affairs** — Latest tech trends, industry news, job market insights, emerging technologies (AI, blockchain, quantum computing, cybersecurity), company developments, and career guidance.\n\n"
+                        "Guidelines:\n"
+                        "- Give detailed, well-structured responses formatted in markdown with headers, bullet points, and code blocks where appropriate.\n"
+                        "- Include practical examples, real-world applications, and actionable advice.\n"
+                        "- When discussing current trends, reference the latest developments in 2025-2026.\n"
+                        "- For coding questions, provide working code examples with explanations.\n"
+                        "- Be enthusiastic, encouraging, and thorough in your responses."
+                    )},
                     {"role": "user", "content": req.message}
                 ]
             )

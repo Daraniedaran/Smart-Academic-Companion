@@ -192,7 +192,7 @@ const Dashboard = () => {
               <MessageSquare size={24} style={{ color: 'var(--primary)' }} />
             </div>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
-              Have questions about computer science algorithms, mathematical concepts, or resume formatting? Start a chat with your companion helper.
+              Ask about any academic topic, programming concept, IT industry trends, cybersecurity, AI/ML, cloud computing, career guidance, and more.
             </p>
           </div>
           <Link to="/chat" className="btn" style={{ alignSelf: 'flex-start' }}>
