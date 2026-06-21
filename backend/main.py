@@ -26,6 +26,9 @@ OPENROUTER_KEY = os.environ.get("OPENROUTER_API_KEY")
 API_KEY = OPENROUTER_KEY or os.environ.get("OPENAI_API_KEY")
 IS_OPENROUTER = bool(OPENROUTER_KEY)
 
+print(f"[STARTUP] API Key found: {bool(API_KEY)}")
+print(f"[STARTUP] Using OpenRouter: {IS_OPENROUTER}")
+
 # Initialize client
 client = None
 if API_KEY and not API_KEY.startswith("your-"):
@@ -41,8 +44,11 @@ if API_KEY and not API_KEY.startswith("your-"):
             )
         else:
             client = OpenAI(api_key=API_KEY)
+        print(f"[STARTUP] ✅ AI client initialized successfully!")
     except Exception as e:
-        print(f"Error initializing API client: {e}")
+        print(f"[STARTUP] ❌ Error initializing API client: {e}")
+else:
+    print(f"[STARTUP] ⚠️ No valid API key found. Using mock fallback responses.")
 
 # --- Helper Mock Fallbacks ---
 def get_mock_chat_response(message: str) -> str:
