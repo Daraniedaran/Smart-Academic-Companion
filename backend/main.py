@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from openai import OpenAI
 import os
 import re
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -21,18 +22,27 @@ app.add_middleware(
 )
 
 # API key setup
-API_KEY = os.environ.get("OPENAI_API_KEY")
-if not API_KEY:
-    # Use the placeholder key as fallback
-    API_KEY = "your-openai-api-key"
+OPENROUTER_KEY = os.environ.get("OPENROUTER_API_KEY")
+API_KEY = OPENROUTER_KEY or os.environ.get("OPENAI_API_KEY")
+IS_OPENROUTER = bool(OPENROUTER_KEY)
 
 # Initialize client
 client = None
 if API_KEY and not API_KEY.startswith("your-"):
     try:
-        client = OpenAI(api_key=API_KEY)
+        if IS_OPENROUTER:
+            client = OpenAI(
+                base_url="https://openrouter.ai/api/v1",
+                api_key=API_KEY,
+                default_headers={
+                    "HTTP-Referer": "http://localhost:5173",
+                    "X-Title": "Smart Academic Companion"
+                }
+            )
+        else:
+            client = OpenAI(api_key=API_KEY)
     except Exception as e:
-        print(f"Error initializing OpenAI client: {e}")
+        print(f"Error initializing API client: {e}")
 
 # --- Helper Mock Fallbacks ---
 def get_mock_chat_response(message: str) -> str:
@@ -142,8 +152,9 @@ async def chat_with_bot(req: ChatRequest):
     
     if client:
         try:
+            model_name = os.environ.get("OPENROUTER_MODEL", "meta-llama/llama-3-8b-instruct:free") if IS_OPENROUTER else "gpt-3.5-turbo"
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model=model_name,
                 messages=[
                     {"role": "system", "content": "You are a helpful academic assistant. Give structured response, format in markdown."},
                     {"role": "user", "content": req.message}
@@ -151,7 +162,7 @@ async def chat_with_bot(req: ChatRequest):
             )
             return {"response": response.choices[0].message.content.strip()}
         except Exception as e:
-            print(f"OpenAI Chat API error: {e}. Falling back to mock generator.")
+            print(f"Chat API error: {e}. Falling back to mock generator.")
             return {"response": get_mock_chat_response(req.message)}
     else:
         return {"response": get_mock_chat_response(req.message)}
@@ -189,8 +200,9 @@ async def analyze_performance(req: PerformanceRequest):
     if client:
         try:
             prompt = f"Analyze this student's marks and provide academic advice:\n{req.marks}"
+            model_name = os.environ.get("OPENROUTER_MODEL", "meta-llama/llama-3-8b-instruct:free") if IS_OPENROUTER else "gpt-3.5-turbo"
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model=model_name,
                 messages=[
                     {"role": "system", "content": "You are an academic performance advisor. Formulate guidance with clear sections and headings in markdown."},
                     {"role": "user", "content": prompt}
@@ -198,7 +210,7 @@ async def analyze_performance(req: PerformanceRequest):
             )
             return {"feedback": response.choices[0].message.content.strip()}
         except Exception as e:
-            print(f"OpenAI Performance API error: {e}. Falling back to mock analyzer.")
+            print(f"Performance API error: {e}. Falling back to mock analyzer.")
             return {"feedback": get_mock_performance_analysis(req.marks)}
     else:
         return {"feedback": get_mock_performance_analysis(req.marks)}
