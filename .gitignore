@@ -1,0 +1,25 @@
+# Frontend dependencies & build output
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+
+# Backend virtual environment & python caching
+backend/venv/
+backend/.venv/
+backend/env/
+backend/__pycache__/
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+
+# Local database / uploads / secrets
+backend/.env
+backend/uploads/
+backend/feedback.txt
+
+# Editor / System configurations
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
