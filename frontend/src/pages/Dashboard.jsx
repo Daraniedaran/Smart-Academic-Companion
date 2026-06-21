@@ -12,6 +12,7 @@ import {
   User,
   Award
 } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const Dashboard = () => {
   const [greeting, setGreeting] = useState('');
@@ -75,7 +76,7 @@ const Dashboard = () => {
     // Fetch notes count
     const fetchNotes = async () => {
       try {
-        const res = await fetch('http://localhost:8000/notes');
+        const res = await fetch(`${API_BASE_URL}/notes`);
         if (res.ok) {
           const data = await res.json();
           setNotesCount(data.notes ? data.notes.length : 0);

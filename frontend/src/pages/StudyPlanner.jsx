@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, BookOpen, Clock, Sparkles, CheckSquare, Square, RefreshCw, Loader, CheckCircle2, ChevronRight } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const StudyPlanner = () => {
   const [subject, setSubject] = useState('');
@@ -86,7 +87,7 @@ Respond ONLY with a valid JSON array matching this exact schema:
 No other text before or after the JSON.`;
 
     try {
-      const response = await fetch('http://localhost:8000/chat', {
+      const response = await fetch(`${API_BASE_URL}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: prompt })

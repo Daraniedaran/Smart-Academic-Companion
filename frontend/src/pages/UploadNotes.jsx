@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FileUp, FileText, CheckCircle, AlertCircle, Loader, HelpCircle } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const UploadNotes = () => {
   const [file, setFile] = useState(null);
@@ -14,7 +15,7 @@ const UploadNotes = () => {
   // Fetch list of notes from backend
   const fetchNotes = async () => {
     try {
-      const res = await fetch('http://localhost:8000/notes');
+      const res = await fetch(`${API_BASE_URL}/notes`);
       if (res.ok) {
         const data = await res.json();
         setUploadedNotes(data.notes || []);
@@ -70,7 +71,7 @@ const UploadNotes = () => {
     formData.append('file', file);
 
     try {
-      const res = await fetch('http://localhost:8000/upload', {
+      const res = await fetch(`${API_BASE_URL}/upload`, {
         method: 'POST',
         body: formData,
       });

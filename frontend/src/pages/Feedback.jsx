@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Send, CheckCircle, RefreshCw, AlertCircle } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const Feedback = () => {
   const [category, setCategory] = useState('Academics');
@@ -20,7 +21,7 @@ const Feedback = () => {
     const formattedFeedback = `[Category: ${category}] ${message.trim()}`;
 
     try {
-      const res = await fetch('http://localhost:8000/feedback', {
+      const res = await fetch(`${API_BASE_URL}/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: formattedFeedback }),
@@ -37,7 +38,7 @@ const Feedback = () => {
       }
     } catch (err) {
       console.error(err);
-      setStatus('Connection error. Is the backend running on port 8000?');
+      setStatus(`Connection error. Is the backend running on ${API_BASE_URL}?`);
     } finally {
       setIsSubmitting(false);
     }

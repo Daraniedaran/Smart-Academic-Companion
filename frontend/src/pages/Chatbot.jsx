@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, Trash2, Sparkles, User, MessageSquare } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const Chatbot = () => {
   const [message, setMessage] = useState('');
@@ -33,7 +34,7 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:8000/chat', {
+      const res = await fetch(`${API_BASE_URL}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMsg }),
@@ -46,7 +47,7 @@ const Chatbot = () => {
       }
     } catch (err) {
       console.error(err);
-      setHistory(prev => [...prev, { role: 'bot', content: 'Connection error. Make sure the backend server is running on localhost:8000.' }]);
+      setHistory(prev => [...prev, { role: 'bot', content: `Connection error. Make sure the backend server is running and accessible at ${API_BASE_URL}.` }]);
     } finally {
       setIsLoading(false);
     }
