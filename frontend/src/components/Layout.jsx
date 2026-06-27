@@ -126,7 +126,7 @@ const Layout = ({ children }) => {
 
         {/* Sidebar Mini Profile Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem', padding: '0 0.5rem' }}>
-          <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--primary-gradient)', color: 'white', display: 'flex', alignItems: 'center', justify: 'center', fontWeight: 'bold', fontSize: '0.9rem' }}>
+          <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--primary-gradient)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.9rem' }}>
             {getInitials(profileName)}
           </div>
           <div style={{ overflow: 'hidden' }}>

@@ -1,19 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, Trash2, Sparkles, User, MessageSquare } from 'lucide-react';
-import { API_BASE_URL } from '../config';
+import { Send, Trash2, Sparkles, User } from 'lucide-react';
+import { api } from '../services/api';
 
 const Chatbot = () => {
   const [message, setMessage] = useState('');
-  const [history, setHistory] = useState([
-    {
-      role: 'bot',
-      content: 'Hello! I am your Smart Academic Companion. Ask me anything about your courses, research topics, resume writing, or exams!'
-    }
-  ]);
+  const [history, setHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Auto scroll to bottom
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -28,54 +22,28 @@ const Chatbot = () => {
 
     const userMsg = message.trim();
     setMessage('');
-    
-    // Add user message to history
     setHistory(prev => [...prev, { role: 'user', content: userMsg }]);
     setIsLoading(true);
 
     try {
-      const res = await fetch(`${API_BASE_URL}/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMsg }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setHistory(prev => [...prev, { role: 'bot', content: data.response }]);
-      } else {
-        setHistory(prev => [...prev, { role: 'bot', content: 'Sorry, I encountered an error communicating with the server.' }]);
-      }
+      const data = await api.chat(userMsg);
+      setHistory(prev => [...prev, { role: 'bot', content: data.response, source: data.source }]);
     } catch (err) {
-      console.error(err);
-      setHistory(prev => [...prev, { role: 'bot', content: `Connection error. Make sure the backend server is running and accessible at ${API_BASE_URL}.` }]);
+      setHistory(prev => [...prev, { role: 'bot', content: `Error: ${err.message}` }]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleChipClick = (prompt) => {
-    setMessage(prompt);
-  };
-
   const clearChat = () => {
-    setHistory([
-      {
-        role: 'bot',
-        content: 'Conversation reset. How can I help you with your studies now?'
-      }
-    ]);
+    setHistory([]);
   };
 
-  // Custom simple parser to render basic markdown elements (bold, headers, bullet lists, code blocks)
   const renderMessageContent = (text) => {
     if (!text) return null;
-    
-    // Split message by code blocks
     const parts = text.split(/(```[\s\S]*?```)/g);
-    
     return parts.map((part, index) => {
       if (part.startsWith('```')) {
-        // It's a code block
         const match = part.match(/```(\w*)\n([\s\S]*?)```/);
         const language = match ? match[1] : '';
         const code = match ? match[2] : part.slice(3, -3);
@@ -88,13 +56,9 @@ const Chatbot = () => {
           </pre>
         );
       }
-      
-      // Process inline elements line-by-line
       const lines = part.split('\n');
       return lines.map((line, lIdx) => {
         let content = line;
-        
-        // Headers
         if (content.startsWith('### ')) {
           return <h3 key={`${index}-${lIdx}`} style={{ marginTop: '0.75rem', marginBottom: '0.5rem' }}>{content.replace('### ', '')}</h3>;
         }
@@ -104,14 +68,10 @@ const Chatbot = () => {
         if (content.startsWith('# ')) {
           return <h1 key={`${index}-${lIdx}`} style={{ marginTop: '0.75rem', marginBottom: '0.5rem' }}>{content.replace('# ', '')}</h1>;
         }
-        
-        // Bullet list item
         const isBullet = content.trim().startsWith('- ') || content.trim().startsWith('* ');
         if (isBullet) {
           content = content.trim().replace(/^[-*]\s+/, '');
         }
-        
-        // Split by bold (**bold**) and inline code (`code`)
         const tokens = content.split(/(\*\*.*?\*\*|`.*?`)/g);
         const parsedTokens = tokens.map((token, tIdx) => {
           if (token.startsWith('**') && token.endsWith('**')) {
@@ -122,7 +82,6 @@ const Chatbot = () => {
           }
           return token;
         });
-        
         if (isBullet) {
           return (
             <li key={`${index}-${lIdx}`} style={{ marginLeft: '1.25rem', marginBottom: '0.25rem', listStyleType: 'disc' }}>
@@ -130,20 +89,10 @@ const Chatbot = () => {
             </li>
           );
         }
-        
         return content.trim() ? <p key={`${index}-${lIdx}`} style={{ marginBottom: '0.5rem' }}>{parsedTokens}</p> : <div key={`${index}-${lIdx}`} style={{ height: '0.5rem' }}></div>;
       });
     });
   };
-
-  const chips = [
-    'Latest AI trends in 2026',
-    'Explain cloud computing vs edge computing',
-    'Top cybersecurity certifications',
-    'Design a study plan for exams',
-    'How does Docker work?',
-    'IT job market & salary insights'
-  ];
 
   return (
     <div className="animate-fadeIn" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -170,6 +119,11 @@ const Chatbot = () => {
               </div>
               <div className="chat-bubble">
                 {renderMessageContent(msg.content)}
+                {msg.role === 'bot' && (
+                  <div style={{ fontSize: '0.65rem', color: 'var(--accent-teal)', marginTop: '0.5rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    AI Response
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -192,15 +146,6 @@ const Chatbot = () => {
 
         {/* Input area */}
         <div className="chat-input-bar-container" style={{ display: 'flex', flexDirection: 'column', background: 'rgba(255, 255, 255, 0.65)', border: '1px solid var(--border-color)', borderTop: 'none', borderRadius: '0 0 var(--border-radius-lg) var(--border-radius-lg)', padding: '1rem' }}>
-          {/* Suggestion Chips */}
-          <div className="prompt-chips">
-            {chips.map((chip, idx) => (
-              <button key={idx} className="prompt-chip" onClick={() => handleChipClick(chip)} disabled={isLoading}>
-                {chip}
-              </button>
-            ))}
-          </div>
-
           {/* Form input */}
           <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '0.75rem' }}>
             <input 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ErrorBoundary from './components/ErrorBoundary';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Chatbot from './pages/Chatbot';
@@ -13,15 +14,17 @@ function App() {
   return (
     <Router>
       <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/chat" element={<Chatbot />} />
-          <Route path="/upload" element={<UploadNotes />} />
-          <Route path="/performance" element={<PerformanceTracker />} />
-          <Route path="/planner" element={<StudyPlanner />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/feedback" element={<Feedback />} />
-        </Routes>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/chat" element={<Chatbot />} />
+            <Route path="/upload" element={<UploadNotes />} />
+            <Route path="/performance" element={<PerformanceTracker />} />
+            <Route path="/planner" element={<StudyPlanner />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/feedback" element={<Feedback />} />
+          </Routes>
+        </ErrorBoundary>
       </Layout>
     </Router>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, BookOpen, Clock, Sparkles, CheckSquare, Square, RefreshCw, Loader, CheckCircle2, ChevronRight } from 'lucide-react';
-import { API_BASE_URL } from '../config';
+import { Calendar, Sparkles, RefreshCw, Loader, CheckCircle2, ChevronRight } from 'lucide-react';
+import { api } from '../services/api';
 
 const StudyPlanner = () => {
   const [subject, setSubject] = useState('');
@@ -87,28 +87,19 @@ Respond ONLY with a valid JSON array matching this exact schema:
 No other text before or after the JSON.`;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: prompt })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        // Check if data.response contains JSON
-        const jsonMatch = data.response.match(/\[\s*\{[\s\S]*\}\s*\]/);
-        if (jsonMatch) {
-          const parsedPlan = JSON.parse(jsonMatch[0]);
-          savePlan({
-            subject,
-            targetDate,
-            daysLeft: diffDays,
-            totalDays: planDuration,
-            schedule: parsedPlan
-          });
-          setIsLoading(false);
-          return;
-        }
+      const data = await api.chat(prompt);
+      const jsonMatch = data.response.match(/\[\s*\{[\s\S]*\}\s*\]/);
+      if (jsonMatch) {
+        const parsedPlan = JSON.parse(jsonMatch[0]);
+        savePlan({
+          subject,
+          targetDate,
+          daysLeft: diffDays,
+          totalDays: planDuration,
+          schedule: parsedPlan
+        });
+        setIsLoading(false);
+        return;
       }
     } catch (err) {
       console.warn('Backend API connection failed, creating a client-side plan fallback.', err);
@@ -141,18 +132,16 @@ No other text before or after the JSON.`;
       });
     }
 
-    // Add final revision day if it's the last day
+    // Add final revision day tasks to the last day if it's the last day
     if (planDuration > 1) {
-      schedule[schedule.length - 1] = {
-        day: planDuration,
-        title: `Final Comprehensive Review`,
-        tasks: [
-          `Review all notes and compiled summaries for ${subject}`,
-          `Solve past exam papers under timed conditions`,
-          `Get 8 hours of rest before the exam!`
-        ],
-        completed: false
-      };
+      const lastDay = schedule[schedule.length - 1];
+      lastDay.title = `Review & ${lastDay.title}`;
+      lastDay.tasks = [
+        ...lastDay.tasks,
+        `Review all notes and compiled summaries for ${subject}`,
+        `Solve past exam papers under timed conditions`,
+        `Get 8 hours of rest before the exam!`
+      ];
     }
 
     // Save final plan structure

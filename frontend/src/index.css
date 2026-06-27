@@ -352,6 +352,17 @@ textarea {
   box-shadow: 0 6px 20px rgba(20, 184, 166, 0.35);
 }
 
+.btn-purple {
+  background: var(--accent-purple-gradient);
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.2);
+  color: var(--text-inverse);
+}
+
+.btn-purple:hover {
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.35);
+}
+
+
 /* Page Specific layouts */
 /* 1. Dashboard */
 .stat-value {
@@ -661,6 +672,15 @@ textarea {
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
+}
+
+.animate-spin {
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Typing loading indicator */

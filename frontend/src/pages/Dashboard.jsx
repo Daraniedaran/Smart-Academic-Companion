@@ -12,7 +12,7 @@ import {
   User,
   Award
 } from 'lucide-react';
-import { API_BASE_URL } from '../config';
+import { api } from '../services/api';
 
 const Dashboard = () => {
   const [greeting, setGreeting] = useState('');
@@ -73,14 +73,10 @@ const Dashboard = () => {
       }
     }
 
-    // Fetch notes count
     const fetchNotes = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/notes`);
-        if (res.ok) {
-          const data = await res.json();
-          setNotesCount(data.notes ? data.notes.length : 0);
-        }
+        const data = await api.getNotes();
+        setNotesCount(data.notes ? data.notes.length : 0);
       } catch (error) {
         console.error('Error fetching notes:', error);
       } finally {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Send, CheckCircle, RefreshCw, AlertCircle } from 'lucide-react';
-import { API_BASE_URL } from '../config';
+import { api } from '../services/api';
+import { FEEDBACK_CATEGORIES, FEEDBACK_CHAR_LIMIT } from '../services/constants';
 
 const Feedback = () => {
   const [category, setCategory] = useState('Academics');
@@ -8,8 +9,6 @@ const Feedback = () => {
   const [status, setStatus] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-
-  const CHARACTER_LIMIT = 500;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,24 +20,12 @@ const Feedback = () => {
     const formattedFeedback = `[Category: ${category}] ${message.trim()}`;
 
     try {
-      const res = await fetch(`${API_BASE_URL}/feedback`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: formattedFeedback }),
-      });
-      
-      const data = await res.json();
-      
-      if (res.ok) {
-        setSuccess(true);
-        setStatus(data.message);
-        setMessage('');
-      } else {
-        setStatus('Submission failed. Please check backend connection.');
-      }
+      const data = await api.submitFeedback(formattedFeedback);
+      setSuccess(true);
+      setStatus(data.message);
+      setMessage('');
     } catch (err) {
-      console.error(err);
-      setStatus(`Connection error. Is the backend running on ${API_BASE_URL}?`);
+      setStatus(`Submission failed: ${err.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -97,11 +84,9 @@ const Feedback = () => {
                     onChange={(e) => setCategory(e.target.value)}
                     disabled={isSubmitting}
                   >
-                    <option value="Academics">Academics & Syllabus</option>
-                    <option value="Facilities">Campus Facilities & Infrastructure</option>
-                    <option value="Faculty">Faculty & Course Delivery</option>
-                    <option value="Administration">Office of Administration</option>
-                    <option value="Others">General Suggestion</option>
+                    {FEEDBACK_CATEGORIES.map(c => (
+                      <option key={c.value} value={c.value}>{c.label}</option>
+                    ))}
                   </select>
                 </div>
 
@@ -111,17 +96,17 @@ const Feedback = () => {
                     <label htmlFor="message" style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
                       Your Message
                     </label>
-                    <span style={{ fontSize: '0.85rem', color: message.length > CHARACTER_LIMIT - 50 ? 'var(--accent-rose)' : 'var(--text-muted)' }}>
-                      {message.length} / {CHARACTER_LIMIT}
+                    <span style={{ fontSize: '0.85rem', color: message.length > FEEDBACK_CHAR_LIMIT - 50 ? 'var(--accent-rose)' : 'var(--text-muted)' }}>
+                      {message.length} / {FEEDBACK_CHAR_LIMIT}
                     </span>
                   </div>
                   <textarea 
                     id="message"
                     value={message} 
-                    onChange={(e) => setMessage(e.target.value.slice(0, CHARACTER_LIMIT))} 
-                    placeholder="Describe your issue, suggestions, or concerns. Focus on constructive feedback..."
-                    disabled={isSubmitting}
-                    maxLength={CHARACTER_LIMIT}
+              onChange={(e) => setMessage(e.target.value.slice(0, FEEDBACK_CHAR_LIMIT))} 
+              placeholder="Describe your issue, suggestions, or concerns. Focus on constructive feedback..."
+              disabled={isSubmitting}
+              maxLength={FEEDBACK_CHAR_LIMIT}
                     required
                   />
                 </div>
